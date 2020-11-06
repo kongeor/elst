@@ -1,4 +1,4 @@
-package gr.cons.elst;
+package com.github.kongeor;
 
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
