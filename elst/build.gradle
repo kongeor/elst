@@ -3,7 +3,7 @@ plugins {
     id 'maven'
 }
 
-group = 'com.github.kongeor'
+group = 'com.github.kongeor.elst'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
