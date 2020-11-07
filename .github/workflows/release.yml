@@ -38,8 +38,8 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset
+      - name: Upload Release Jar
+        id: upload-release-jar
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -49,7 +49,7 @@ jobs:
           asset_name: elst.jar
           asset_content_type: application/java-archive
       - name: Upload Release Javadoc
-        id: upload-release-asset
+        id: upload-release-javadoc
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -59,7 +59,7 @@ jobs:
           asset_name: elst-javadoc.jar
           asset_content_type: application/java-archive
       - name: Upload Release Sources
-        id: upload-release-asset
+        id: upload-release-sources
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
