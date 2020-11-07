@@ -1,6 +1,9 @@
-name: Java CI
+name: Java Release
 
-on: [push]
+on:
+  create:
+    tags:
+      - "*"
 
 jobs:
   build:
@@ -41,7 +44,27 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./elst/build/libs/elst.jar
           asset_name: elst.jar
+          asset_content_type: application/java-archive
+      - name: Upload Release Javadoc
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./elst/build/libs/elst-javadoc.jar
+          asset_name: elst-javadoc.jar
+          asset_content_type: application/java-archive
+      - name: Upload Release Sources
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./elst/build/libs/elst-sources.jar
+          asset_name: elst-sources.jar
           asset_content_type: application/java-archive

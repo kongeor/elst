@@ -1,4 +1,4 @@
-package com.github.kongeor;
+package com.github.kongeor.elst;
 
 import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.el.GreekLowerCaseFilter;
