@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class Elst {
 
-    public static String lowerStopAndStep(String word) {
+    public static String lowerStopAndStem(String word) {
         ElstGreekAnalyzer analyzer = new ElstGreekAnalyzer();
 
         TokenStream tokenStream = analyzer.tokenStream(null, word);

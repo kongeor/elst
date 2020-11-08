@@ -16,14 +16,14 @@ class ElstTest {
 
     @Test
     void test_one() {
-        assertEquals("αυρ", Elst.lowerStopAndStep("Αύριο"));
+        assertEquals("αυρ", Elst.lowerStopAndStem("Αύριο"));
     }
 
     @Test
     void test_phrase() {
         String text = "Πέτσας-Κορωνοϊός: Σε lockdown Θεσσαλονίκη και Σέρρες από αύριο - Με SMS οι μετακινήσεις";
         List<String> stemmed = Arrays.stream(text.split(" "))
-                .map(Elst::lowerStopAndStep)
+                .map(Elst::lowerStopAndStem)
                 .collect(Collectors.toList());
         assertLinesMatch(Arrays.asList("πετσ", "Σε", "lockdown", "θεσσαλον", "και", "σερρ", "από", "αυρ", "-",
                 "Με", "sms", "οι", "μετακινησ"), stemmed);
