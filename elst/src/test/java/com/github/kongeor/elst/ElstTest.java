@@ -3,30 +3,35 @@
  */
 package com.github.kongeor.elst;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 
 class ElstTest {
 
-    @Test
-    void test_one() {
-        assertEquals("αυρ", Elst.lowerStopAndStem("Αύριο"));
+    @ParameterizedTest
+    @CsvSource({
+            "    foo bar -   baz   , 'foo,bar,baz'",
+            "Πέτσας-Κορωνοϊός: Σε lockdown Θεσσαλονίκη και Σέρρες από αύριο - Με SMS οι μετακινήσεις, 'πετσ,κορωνοι,lockdown,θεσσαλον,σερρ,sms,μετακινησ'",
+            "Ζουγανέλη: Σπάνιες φωτό από το νεοκλασικό σπίτι στο οποίο ζει με τον σύζυγό της, 'ζουγανελ,σπανι,φω,νεοκλασ,σπιτ,ζ,συζυγ'",
+            "Θεσσαλονίκη: Έκρηξη από γκαζάκια σε πολυκατοικία, 'θεσσαλον,εκρηξ,γκαζακ,πολυκατοικ'",
+            "Μέρκελ-Κορωνοϊός: Δύσκολη η κάτασταση - Αναπόφευκτη η χρήση του «φρένου», 'μερκελ,κορωνοι,δυσκολ,καταστασ,αναποφευκτ,χρησ,φρεν'",
+            "Η ΑΕΚ συμφώνησε με Μάνταλο για νέο συμβόλαιο μέχρι το 2024!, 'αεκ,συμφων,μανταλ,νε,συμβολαι,2024'",
+            "Chris Σταμούλης: Αποκαλύπτει που πήγε με τον Αλέξη Παππά όταν εξαφανίστηκαν στη ζούγκλα, 'chris,σταμουλ,αποκαλυπτ,πηγ,αλεξ,παππ,εξαφανιστ,ζουγκλ'",
+            "Ψάχνονται στη Βουλή για το συγκλονιστικό βίντεο με τον θάνατο του 23χρονου, 'ψαχν,βουλ,συγκλονιστ,βιντε,θανατ,23χρον'",
+            "Κικίλιας για ΕΣΥ: Υποχρεωτικά δύο rapid tests την εβδομάδα σε όσους δεν έχουν εμβολιαστεί, 'κικιλ,υποχρεωτ,δυ,rapid,tests,εβδομαδ,οσ,εμβολιαστ'",
+            "Ολλανδία: Νικητής ο Μαρκ Ρούτε στις πρώτες ευρωπαϊκές κάλπες εν μέσω πανδημίας, 'ολλανδ,νικητ,μαρκ,ρουτ,στισ,πρωτ,ευρωπαικ,καλπ,μεσ,πανδημ'"
+    })
+    public void test_phrases(String phrase, String tokens) {
+
+        List<String> stemmed = Elst.lowerStopAndStemPhrase(phrase);
+        List<String> expected = Arrays.asList(tokens.split(","));
+        assertLinesMatch(expected, stemmed);
     }
 
-    @Test
-    void test_phrase() {
-        String text = "Πέτσας-Κορωνοϊός: Σε lockdown Θεσσαλονίκη και Σέρρες από αύριο - Με SMS οι μετακινήσεις";
-        List<String> stemmed = Arrays.stream(text.split(" "))
-                .map(Elst::lowerStopAndStem)
-                .collect(Collectors.toList());
-        assertLinesMatch(Arrays.asList("πετσ", "Σε", "lockdown", "θεσσαλον", "και", "σερρ", "από", "αυρ", "-",
-                "Με", "sms", "οι", "μετακινησ"), stemmed);
-    }
 
 }
