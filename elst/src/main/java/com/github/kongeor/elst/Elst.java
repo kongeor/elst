@@ -11,9 +11,15 @@ import java.util.stream.Collectors;
 
 public class Elst {
 
-    public static String lowerStopAndStem(String word) {
-        ElstGreekAnalyzer analyzer = new ElstGreekAnalyzer();
+    public static String lowerAndStop(String word) {
+        return processImpl(word, new ElstGreekAnalyzer(true, false));
+    }
 
+    public static String lowerStopAndStem(String word) {
+        return processImpl(word, new ElstGreekAnalyzer());
+    }
+
+    private static String processImpl(String word, ElstGreekAnalyzer analyzer) {
         TokenStream tokenStream = analyzer.tokenStream(null, word);
         CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
 
@@ -26,6 +32,13 @@ public class Elst {
             throw new IllegalArgumentException("Could not process: " + word, e);
         }
         return null;
+    }
+
+    public static List<String> lowerAndStopPhrase(String phrase) {
+        return Arrays.stream(phrase.split("\\s+|_|-|:"))
+                .map(Elst::lowerAndStop)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     public static List<String> lowerStopAndStemPhrase(String phrase) {

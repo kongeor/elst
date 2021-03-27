@@ -11,19 +11,32 @@ public final class ElstGreekAnalyzer extends StopwordAnalyzerBase {
     // https://github.com/stopwords-iso/stopwords-el
     public static final String DEFAULT_STOPWORD_FILE = "/stopwords-el.txt";
 
+    private final boolean stop;
+    private final boolean stem;
+
     public ElstGreekAnalyzer() {
-        this(DefaultSetHolder.DEFAULT_SET);
+        this(true, true);
     }
 
-    public ElstGreekAnalyzer(CharArraySet stopwords) {
+    public ElstGreekAnalyzer(boolean stop, boolean stem) {
+        this(DefaultSetHolder.DEFAULT_SET, stop, stem);
+    }
+
+    public ElstGreekAnalyzer(CharArraySet stopwords, boolean stop, boolean stem) {
         super(stopwords);
+        this.stop = stop;
+        this.stem = stem;
     }
 
     protected TokenStreamComponents createComponents(String fieldName) {
         Tokenizer source = new StandardTokenizer();
         TokenStream result = new GreekLowerCaseFilter(source);
-        result = new StopFilter(result, this.stopwords);
-        result = new ElstGreekStemTokenFilter(result);
+        if (stop) {
+            result = new StopFilter(result, this.stopwords);
+        }
+        if (stem) {
+            result = new ElstGreekStemTokenFilter(result);
+        }
         return new TokenStreamComponents(source, result);
     }
 

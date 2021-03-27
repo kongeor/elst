@@ -3,6 +3,7 @@
  */
 package com.github.kongeor.elst;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -10,8 +11,28 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ElstTest {
+
+    @Test
+    public void test_test() {
+        assertNull(Elst.lowerStopAndStem("και"));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "    foo bar -   baz   , 'foo,bar,baz'",
+            "Πέτσας-Κορωνοϊός: Σε lockdown Θεσσαλονίκη και Σέρρες από αύριο - Με SMS οι μετακινήσεις, 'πετσασ,κορωνοιοσ,lockdown,θεσσαλονικη,σερρεσ,sms,μετακινησεισ'",
+            "Θεσσαλονίκη: Έκρηξη από γκαζάκια σε πολυκατοικία, 'θεσσαλονικη,εκρηξη,γκαζακια,πολυκατοικια'",
+            "Ολλανδία: Νικητής ο Μαρκ Ρούτε στις πρώτες ευρωπαϊκές κάλπες εν μέσω πανδημίας, 'ολλανδια,νικητησ,μαρκ,ρουτε,στισ,πρωτεσ,ευρωπαικεσ,καλπεσ,μεσω,πανδημιασ'"
+    })
+    public void test_lower_and_stop_phrases(String phrase, String tokens) {
+
+        List<String> stemmed = Elst.lowerAndStopPhrase(phrase);
+        List<String> expected = Arrays.asList(tokens.split(","));
+        assertLinesMatch(expected, stemmed);
+    }
 
     @ParameterizedTest
     @CsvSource({
@@ -26,7 +47,7 @@ class ElstTest {
             "Κικίλιας για ΕΣΥ: Υποχρεωτικά δύο rapid tests την εβδομάδα σε όσους δεν έχουν εμβολιαστεί, 'κικιλ,υποχρεωτ,δυ,rapid,tests,εβδομαδ,οσ,εμβολιαστ'",
             "Ολλανδία: Νικητής ο Μαρκ Ρούτε στις πρώτες ευρωπαϊκές κάλπες εν μέσω πανδημίας, 'ολλανδ,νικητ,μαρκ,ρουτ,στισ,πρωτ,ευρωπαικ,καλπ,μεσ,πανδημ'"
     })
-    public void test_phrases(String phrase, String tokens) {
+    public void test_lower_stop_and_stem_phrases(String phrase, String tokens) {
 
         List<String> stemmed = Elst.lowerStopAndStemPhrase(phrase);
         List<String> expected = Arrays.asList(tokens.split(","));

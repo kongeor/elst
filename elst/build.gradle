@@ -18,8 +18,8 @@ dependencies {
 
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 
-    compile 'org.apache.lucene:lucene-core:8.5.1'
-    compile 'org.apache.lucene:lucene-analyzers-common:8.5.1'
+    compile 'org.apache.lucene:lucene-core:8.8.1'
+    compile 'org.apache.lucene:lucene-analyzers-common:8.8.1'
 }
 
 tasks.named('test') {
